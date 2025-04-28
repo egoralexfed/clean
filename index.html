@@ -383,7 +383,27 @@
                 this.disabled = true;
             });
         });
-
+ // Интеграция с Telegram WebApp
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.expand();
+            tg.enableClosingConfirmation();
+            
+            // Можно использовать данные пользователя Telegram
+            const user = tg.initDataUnsafe?.user;
+            if (user) {
+                const profileName = document.querySelector('#profile-tab h3');
+                if (profileName) {
+                    profileName.textContent = `${user.first_name} ${user.last_name || ''}`.trim();
+                }
+                
+                const avatar = document.querySelector('.avatar');
+                if (avatar) {
+                    avatar.textContent = user.first_name[0] + (user.last_name?.[0] || '');
+                }
+            }
+        }
+    </script>
     
     <script>
         const SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbxaxBpOnaxS24n2Kfhac9TW53tf9M3IsJe5c6EzHIsxXU88q4RSx7YbJAbjT8H0JaRo/exec';
