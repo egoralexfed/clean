@@ -3,44 +3,84 @@
 <head>
   <meta charset="UTF-8">
   <title>Добро пожаловать</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: sans-serif;
       background: #f5f5f5;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
       margin: 0;
+    }
+    .header {
+      background: #1FA0A6;
+      color: white;
+      padding: 15px;
       text-align: center;
     }
-    h1 {
-      color: #1FA0A6;
-      margin-bottom: 20px;
+    .header h1 {
+      margin: 0;
+      font-size: 22px;
     }
-    p {
-      margin-bottom: 30px;
+    .header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    .message {
+      padding: 30px;
+      text-align: center;
       font-size: 16px;
       color: #333;
     }
-    a.button {
-      display: inline-block;
-      padding: 12px 24px;
-      background: #1FA0A6;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
+    .tab-bar {
+      display: flex;
+      background: #ffffff;
+      border-top: 1px solid #e0e0e0;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      padding: 8px 0;
     }
-    a.button:hover {
-      background: #178d92;
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 8px 0;
+      font-size: 12px;
+      color: #888;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .tab:hover {
+      background: #f0f0f0;
     }
   </style>
 </head>
 <body>
+
+<div class="header">
   <h1>Регистрация прошла успешно!</h1>
-  <p>Теперь тебе нужно заполнить профиль и пройти обучение.</p>
-  <a href="index.html" class="button">Перейти к заказам</a>
+  <p>Заполни профиль и пройди обучение</p>
+</div>
+
+<div class="tab-bar">
+  <div class="tab" onclick="go('orders')">🛠 Заказы</div>
+  <div class="tab" onclick="go('education')">🎓 Обучение</div>
+  <div class="tab" onclick="go('tests')">🧪 Тесты</div>
+  <div class="tab" onclick="go('profile')">👤 Профиль</div>
+</div>
+
+<script>
+  // Если уже видел welcome — сразу на index
+  if (localStorage.getItem("welcome_seen") === "true") {
+    window.location.href = "index.html";
+  }
+
+  function go(section) {
+    localStorage.setItem("welcome_seen", "true");
+    window.location.href = `index.html#${section}`;
+  }
+</script>
+
 </body>
 </html>
