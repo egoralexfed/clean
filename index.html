@@ -184,9 +184,11 @@
       fetch(`${SHEET_API_URL}?action=register&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`)
         .then(r => r.json())
         .then(data => {
-          if (data.success) {
-            window.location.href = 'welcome.html';
-          } else {
+         if (data.success) {
+  localStorage.setItem('welcome_seen', 'false');
+  window.location.href = 'welcome.html';
+}
+          else {
             alert('Пользователь уже существует. Попробуйте авторизоваться.');
           }
         })
