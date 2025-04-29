@@ -200,6 +200,22 @@
         });
     }
   </script>
+<script>
+  function loadSection(name) {
+    const container = document.getElementById('section-container');
+    fetch('sections/' + name + '.html')
+      .then(res => {
+        if (!res.ok) throw new Error('Ошибка загрузки');
+        return res.text();
+      })
+      .then(html => container.innerHTML = html)
+      .catch(err => {
+        container.innerHTML = '<p style="color:red;">Ошибка загрузки раздела</p>';
+        console.error(err);
+      });
+  }
 
+  document.addEventListener('DOMContentLoaded', () => loadSection('orders'));
+</script>
 </body>
 </html>
