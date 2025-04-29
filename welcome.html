@@ -63,6 +63,10 @@
   <p>Заполни профиль и пройди обучение</p>
 </div>
 
+<div class="message">
+  Спасибо за регистрацию. Ты можешь перейти в любой раздел снизу.
+</div>
+
 <div class="tab-bar">
   <div class="tab" onclick="go('orders')">🛠 Заказы</div>
   <div class="tab" onclick="go('education')">🎓 Обучение</div>
@@ -71,10 +75,12 @@
 </div>
 
 <script>
-  // Если уже видел welcome — сразу на index
-  if (localStorage.getItem("welcome_seen") === "true") {
-    window.location.href = "index.html";
-  }
+  // Задержка для избежания автоперехода при первой загрузке
+  setTimeout(() => {
+    if (localStorage.getItem("welcome_seen") === "true") {
+      window.location.href = "index.html";
+    }
+  }, 2000); // 2 секунды
 
   function go(section) {
     localStorage.setItem("welcome_seen", "true");
