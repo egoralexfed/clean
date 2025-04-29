@@ -147,6 +147,10 @@
 
     // Подгружаем имя пользователя из Telegram
     const tg = window.Telegram?.WebApp;
+
+    if (tg) {
+    tg.ready(); // <<< ЭТО ОБЯЗАТЕЛЬНО!
+      
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
       const user = tg.initDataUnsafe.user;
       const usernameInput = document.getElementById('username');
