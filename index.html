@@ -185,9 +185,7 @@
         .then(r => r.json())
         .then(data => {
           if (data.success) {
-            document.getElementById('auth-container').style.display = 'none';
-            document.getElementById('app').style.display = 'block';
-            loadSection('orders');
+            window.location.href = 'welcome.html';
           } else {
             alert('Пользователь уже существует. Попробуйте авторизоваться.');
           }
