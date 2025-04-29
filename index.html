@@ -219,7 +219,11 @@
         });
     }
 
-    document.addEventListener('DOMContentLoaded', () => loadSection('orders'));
+    document.addEventListener('DOMContentLoaded', () => {
+  const hash = window.location.hash.replace('#', '');
+  const section = hash || 'orders';
+  loadSection(section);
+});
   </script>
 
 </body>
