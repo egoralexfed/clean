@@ -1,9 +1,8 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Заказы</title>
   <style>
     :root {
       --main-color: #1FA0A6;
@@ -30,23 +29,14 @@
       color: white;
       padding: 15px;
       text-align: center;
-    }
-
-    .app-title {
-      font-size: 24px;
-      margin-bottom: 5px;
-    }
-
-    .app-subtitle {
-      font-size: 14px;
-      opacity: 0.9;
+      font-size: 20px;
+      font-weight: bold;
     }
 
     .view-tabs {
       display: flex;
       background: white;
       border-bottom: 1px solid #eee;
-      width: 100vw;
     }
 
     .view-tab {
@@ -74,7 +64,7 @@
 
     .tab-content {
       display: none;
-      height: calc(100vh - 126px);
+      height: calc(100vh - 110px);
       overflow-y: auto;
     }
 
@@ -168,17 +158,14 @@
 </head>
 <body>
 
-  <div class="header">
-    <div class="app-title">Чисто Конкретно</div>
-    <div class="app-subtitle">для клинера (Beta)</div>
-  </div>
+  <div class="header">Заказы</div>
 
   <div class="view-tabs">
-    <div class="view-tab" data-tab="map-view">На карте</div>
+    <div class="view-tab active" data-tab="map-view">На карте</div>
     <div class="view-tab" data-tab="list-view">Списком</div>
   </div>
 
-  <div id="map-view" class="tab-content">
+  <div id="map-view" class="tab-content active">
     <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A8ec6c519b26e079ee5796b0539bcb78d24a8a59a2ff7c8718cfb1ddbeef5e464&amp;source=constructor" frameborder="0"></iframe>
   </div>
 
@@ -189,13 +176,15 @@
         <h3 class="order-title">Генеральная уборка 3-к. квартиры</h3>
         <div class="order-details">
           <span>📍 Центральный район</span>
-          <span>🕒 3–4 часа</span>
+          <span>🕒 3-4 часа</span>
         </div>
         <div class="order-footer">
           <span class="order-price">3 500 ₽</span>
           <button class="take-btn">Принять</button>
         </div>
-        <div class="distance">📌 1.2 км от вас</div>
+        <div class="distance">
+          📌 1.2 км от вас
+        </div>
       </div>
 
       <div class="order-card">
@@ -209,42 +198,34 @@
           <span class="order-price">2 200 ₽</span>
           <button class="take-btn">Принять</button>
         </div>
-        <div class="distance">📌 2.5 км от вас</div>
+        <div class="distance">
+          📌 2.5 км от вас
+        </div>
       </div>
     </div>
   </div>
 
   <script>
-    const tabs = document.querySelectorAll('.view-tab');
-    const contents = document.querySelectorAll('.tab-content');
-
-    function activateTab(tabName) {
-      tabs.forEach(t => {
-        t.classList.toggle('active', t.dataset.tab === tabName);
+    // Переключение между вкладками
+    document.querySelectorAll('.view-tab').forEach(tab => {
+      tab.addEventListener('click', function () {
+        document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById(this.dataset.tab).classList.add('active');
       });
-      contents.forEach(c => {
-        c.classList.toggle('active', c.id === tabName);
-      });
-      localStorage.setItem('active_orders_tab', tabName);
-    }
-
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => activateTab(tab.dataset.tab));
     });
 
+    // Обработка кнопок "Принять"
     document.querySelectorAll('.take-btn').forEach(btn => {
       btn.addEventListener('click', function () {
         const orderTitle = this.closest('.order-card').querySelector('.order-title').textContent;
-        alert(`Вы приняли заказ: ${orderTitle}`);
+        alert(Вы приняли заказ: ${orderTitle});
         this.textContent = '✅ Принято';
         this.disabled = true;
         this.style.background = '#4CAF50';
       });
     });
-
-    // При загрузке страницы — восстановить вкладку
-    const savedTab = localStorage.getItem('active_orders_tab') || 'map-view';
-    activateTab(savedTab);
   </script>
 </body>
 </html>
