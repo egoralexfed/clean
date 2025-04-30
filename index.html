@@ -204,27 +204,30 @@
 }
 
     function loadSection(name) {
-      const container = document.getElementById('section-container');
-      fetch('sections/' + name + '.html')
-        .then(res => {
-          if (!res.ok) throw new Error('Ошибка загрузки');
-          return res.text();
-        })
-        .then(html => {
-          container.style.opacity = 0;
-          setTimeout(() => {
-            container.innerHTML = html;
-            container.style.opacity = 1;
-          }, 100);
-          document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-          const activeTab = document.querySelector(`.tab[data-tab="${name}"]`);
-          if (activeTab) activeTab.classList.add('active');
-        })
-        .catch(err => {
-          container.innerHTML = '<p style="color:red;">Ошибка загрузки раздела</p>';
-          console.error(err);
-        });
-    }
+  const container = document.getElementById('section-container');
+  fetch('sections/' + name + '.html')
+    .then(res => {
+      if (!res.ok) throw new Error('Ошибка загрузки');
+      return res.text();
+    })
+    .then(html => {
+      container.style.opacity = 0;
+      setTimeout(() => {
+        container.innerHTML = html;
+        container.style.opacity = 1;
+      }, 100);
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      const activeTab = document.querySelector(`.tab[data-tab="${name}"]`);
+      if (activeTab) activeTab.classList.add('active');
+
+      window.location.hash = name; // 👈 сохраняем текущий раздел
+    })
+    .catch(err => {
+      container.innerHTML = '<p style="color:red;">Ошибка загрузки раздела</p>';
+      console.error(err);
+    });
+}
+  
 
     document.addEventListener('DOMContentLoaded', () => {
   const isLoggedIn = localStorage.getItem('is_logged_in') === 'true';
