@@ -162,16 +162,7 @@
             color: #666;
         }
         
-        /* Нижнее меню */
-        .tab-bar {
-            display: flex;
-            background: var(--secondary-bg-color);
-            border-top: 1px solid #e0e0e0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            padding: 8px 0;
-        }
+     
         
         .tab {
             flex: 1;
@@ -195,12 +186,7 @@
     </style>
 </head>
 <body>
-    <!-- Шапка приложения -->
-    <div class="header">
-        <div class="app-title">Чисто Конкретно</div>
-        <div class="app-subtitle">для клинера - заказы</div>
-    </div>
-    
+  
     <!-- Вкладки переключения вида -->
     <div class="view-tabs">
         <div class="view-tab active" data-tab="map-view">На карте</div>
@@ -266,25 +252,6 @@
         </div>
     </div>
     
-    <!-- Нижнее меню -->
-    <div class="tab-bar">
-        <div class="tab active">
-            <span class="tab-icon">🛠️</span>
-            <span>Заказы</span>
-        </div>
-        <div class="tab">
-            <span class="tab-icon">🎓</span>
-            <span>Обучение</span>
-        </div>
-        <div class="tab">
-            <span class="tab-icon">🧪</span>
-            <span>Тесты</span>
-        </div>
-        <div class="tab">
-            <span class="tab-icon">👤</span>
-            <span>Профиль</span>
-        </div>
-    </div>
 
     <script>
         // Переключение между вкладками
@@ -315,11 +282,6 @@
             });
         });
         
-        // Интеграция с Telegram WebApp
-        const tg = window.Telegram?.WebApp;
-        if (tg) {
-            tg.expand();
-            tg.enableClosingConfirmation();
             
             // Для карты можно использовать Telegram WebApp.initData
             if (document.getElementById('map-view').classList.contains('active')) {
