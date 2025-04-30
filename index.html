@@ -242,6 +242,11 @@
   const section = hash || 'orders';
   loadSection(section);
 });
+    function logoutUser() {
+  localStorage.removeItem('is_logged_in');
+  localStorage.removeItem('welcome_seen');
+  window.location.href = 'index.html';
+}
   </script>
 
 </body>
