@@ -1,1 +1,353 @@
-<h2>Ваши заказы</h2><p>Здесь будет список заказов.</p>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чисто Конкретно для клинера - Заказы</title>
+    <style>
+        :root {
+            --main-color: #1FA0A6;
+            --button-color: #1FA0A6;
+            --button-text-color: white;
+            --secondary-bg-color: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background: #f5f5f5;
+            color: #333;
+            max-width: 100vw;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: var(--main-color);
+            color: white;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .app-title {
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 3px;
+        }
+        
+        .app-subtitle {
+            font-size: 14px;
+            text-align: center;
+            opacity: 0.9;
+        }
+        
+        /* Вкладки переключения */
+        .view-tabs {
+            display: flex;
+            background: white;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .view-tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .view-tab.active {
+            color: var(--main-color);
+        }
+        
+        .view-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--main-color);
+        }
+        
+        /* Контейнеры вкладок */
+        .tab-content {
+            display: none;
+            height: calc(100vh - 180px);
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Стили для карты */
+        #map-view {
+            background: #e8f4f8;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 18px;
+        }
+        
+        /* Стили для списка */
+        .orders-container {
+            padding: 15px;
+            overflow-y: auto;
+        }
+        
+        .order-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .badge-urgent {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+        
+        .badge-standard {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .order-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .order-details {
+            display: flex;
+            gap: 15px;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .order-price {
+            font-weight: bold;
+            color: var(--main-color);
+            font-size: 18px;
+        }
+        
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .take-btn {
+            background: var(--button-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .distance {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+        }
+        
+        /* Нижнее меню */
+        .tab-bar {
+            display: flex;
+            background: var(--secondary-bg-color);
+            border-top: 1px solid #e0e0e0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 8px 0;
+        }
+        
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 8px 0;
+            font-size: 12px;
+            color: #888;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .tab.active {
+            color: var(--main-color);
+        }
+        
+        .tab-icon {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка приложения -->
+    <div class="header">
+        <div class="app-title">Чисто Конкретно</div>
+        <div class="app-subtitle">для клинера - заказы</div>
+    </div>
+    
+    <!-- Вкладки переключения вида -->
+    <div class="view-tabs">
+        <div class="view-tab active" data-tab="map-view">На карте</div>
+        <div class="view-tab" data-tab="list-view">Списком</div>
+    </div>
+    
+   <!-- Контент вкладки "Списком" -->
+    <div id="list-view" class="tab-content">
+        <div class="orders-container">
+            <!-- Заказ 1 -->
+            <div class="order-card">
+                <span class="badge badge-urgent">СРОЧНЫЙ</span>
+                <h3 class="order-title">Генеральная уборка 3-к. квартиры</h3>
+                <div class="order-details">
+                    <span>📍 Центральный район</span>
+                    <span>🕒 3-4 часа</span>
+                </div>
+                <div class="order-footer">
+                    <span class="order-price">3 500 ₽</span>
+                    <button class="take-btn">Принять</button>
+                </div>
+                <div class="distance">
+                    <span>📌</span>
+                    <span>1.2 км от вас</span>
+                </div>
+            </div>
+            
+            <!-- Заказ 2 -->
+            <div class="order-card">
+                <span class="badge badge-standard">СТАНДАРТ</span>
+                <h3 class="order-title">Мытьё окон (8 шт.)</h3>
+                <div class="order-details">
+                    <span>📍 Ленинский район</span>
+                    <span>🕒 2 часа</span>
+                </div>
+                <div class="order-footer">
+                    <span class="order-price">2 200 ₽</span>
+                    <button class="take-btn">Принять</button>
+                </div>
+                <div class="distance">
+                    <span>📌</span>
+                    <span>2.5 км от вас</span>
+                </div>
+            </div>
+            
+            <!-- Заказ 3 -->
+            <div class="order-card">
+                <span class="badge badge-standard">СТАНДАРТ</span>
+                <h3 class="order-title">Уборка после ремонта</h3>
+                <div class="order-details">
+                    <span>📍 Октябрьский район</span>
+                    <span>🕒 4-5 часов</span>
+                </div>
+                <div class="order-footer">
+                    <span class="order-price">4 800 ₽</span>
+                    <button class="take-btn">Принять</button>
+                </div>
+                <div class="distance">
+                    <span>📌</span>
+                    <span>3.1 км от вас</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Нижнее меню -->
+    <div class="tab-bar">
+        <div class="tab active">
+            <span class="tab-icon">🛠️</span>
+            <span>Заказы</span>
+        </div>
+        <div class="tab">
+            <span class="tab-icon">🎓</span>
+            <span>Обучение</span>
+        </div>
+        <div class="tab">
+            <span class="tab-icon">🧪</span>
+            <span>Тесты</span>
+        </div>
+        <div class="tab">
+            <span class="tab-icon">👤</span>
+            <span>Профиль</span>
+        </div>
+    </div>
+
+    <script>
+        // Переключение между вкладками
+        document.querySelectorAll('.view-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Убираем активный класс у всех вкладок
+                document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Добавляем активный класс текущей вкладке
+                this.classList.add('active');
+                const tabId = this.dataset.tab;
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Обработка кнопки "Принять"
+        document.querySelectorAll('.take-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const orderCard = this.closest('.order-card');
+                const orderTitle = orderCard.querySelector('.order-title').textContent;
+                
+                alert(`Вы приняли заказ: ${orderTitle}`);
+                
+                this.textContent = '✅ Принято';
+                this.style.background = '#4CAF50';
+                this.disabled = true;
+            });
+        });
+        
+        // Интеграция с Telegram WebApp
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.expand();
+            tg.enableClosingConfirmation();
+            
+            // Для карты можно использовать Telegram WebApp.initData
+            if (document.getElementById('map-view').classList.contains('active')) {
+                // Инициализация карты
+                console.log('Инициализация карты...');
+            }
+        }
+    </script>
+</body>
+</html>
