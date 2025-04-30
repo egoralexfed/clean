@@ -155,29 +155,29 @@
     }
 
     function loginUser() {
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
-      if (!username || !password) return alert('Пожалуйста, заполните все поля.');
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
+  if (!username || !password) return alert('Пожалуйста, заполните все поля.');
 
-      fetch(`${SHEET_API_URL}?action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`)
-        .then(r => r.json())
-        .then(data => {
-          if (data.success) {
-  localStorage.setItem('is_logged_in', 'true'); // 👈 вот это обязательно!
-  document.getElementById('auth-container').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  loadSection('orders');
+  fetch(`${SHEET_API_URL}?action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`)
+    .then(r => r.json())
+    .then(data => {
+      if (data.success) {
+        localStorage.setItem('is_logged_in', 'true');
+        document.getElementById('auth-container').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        loadSection('orders');
+      } else {
+        if (confirm('Пользователь не найден. Хотите зарегистрироваться?')) {
+          registerUser();
+        }
+      }
+    })
+    .catch(e => {
+      console.error('Ошибка входа:', e);
+      alert('Ошибка подключения к серверу.');
+    });
 }
-          } else {
-            if (confirm('Пользователь не найден. Хотите зарегистрироваться?')) registerUser();
-          }
-        })
-        .catch(e => {
-          console.error('Ошибка входа:', e);
-          alert('Ошибка подключения к серверу.');
-        });
-    }
-
     function registerUser() {
   const username = document.getElementById('username').value.trim();
   const password = document.getElementById('password').value.trim();
