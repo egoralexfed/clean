@@ -227,6 +227,17 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+  const isLoggedIn = localStorage.getItem('is_logged_in') === 'true';
+
+  if (!isLoggedIn) {
+    document.getElementById('auth-container').style.display = 'block';
+    document.getElementById('app').style.display = 'none';
+    return;
+  }
+
+  document.getElementById('auth-container').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+
   const hash = window.location.hash.replace('#', '');
   const section = hash || 'orders';
   loadSection(section);
